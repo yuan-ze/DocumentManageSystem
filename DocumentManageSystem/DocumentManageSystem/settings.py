@@ -29,7 +29,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'users', # 用户
+    'users',  # 用户
 ]
 
 MIDDLEWARE = [
@@ -73,7 +72,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DocumentManageSystem.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -88,6 +86,24 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    "default": {  # 默认Redis配置项
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://39.106.224.193:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "session": {  # 存储session，实现状态保持
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://39.106.224.193/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "session"
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -107,20 +123,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
