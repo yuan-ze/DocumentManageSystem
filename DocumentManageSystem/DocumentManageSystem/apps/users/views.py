@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.shortcuts import render
 from django.views import View
 from django import http
@@ -25,6 +26,9 @@ class LoginView(View):
             return http.HttpResponseForbidden('用户不存在')
         if not user.check_password(password):
             return http.HttpResponseForbidden('密码输入错误')
+
+        # 验证通过，实现状态保持
+        login(request, user)
 
         return http.JsonResponse({'msg': '登录成功'})
 
@@ -56,7 +60,7 @@ class RegisterTeacherView(View):
             return http.HttpResponseForbidden('请输入性别')
         # 创建用户
         try:
-            UserModel.objects.create_user(
+            user = UserModel.objects.create_user(
                 username=username,
                 password=password,
                 name=name,
@@ -65,6 +69,9 @@ class RegisterTeacherView(View):
             )
         except:
             return http.JsonResponse({'msg': '注册失败'})
+
+        # 注册完毕，实现状态保持进入登录
+        login(request, user)
 
         # 返回响应
         return http.JsonResponse({'msg': '注册成功'})
