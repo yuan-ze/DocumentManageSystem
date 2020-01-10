@@ -1,11 +1,52 @@
-from django.shortcuts import render
 from django.views import View
 from django import http
+import re
 
 from users.models import UserModel
 
 
 # Create your views here.
+
+
+class RegiestTeacherView(View):
+    """教师注册"""
+
+    def post(self, request):
+        # 接收参数
+        try:
+            username = request.POST['username']
+            password = request.POST['password']
+            password2 = request.POST['password2']
+            name = request.POST['name']
+            sex = request.POST['sex']
+        except:
+            return http.HttpResponseForbidden('缺少必传参数')
+
+        # 校验参数
+        if not username.isdigit():
+            return http.HttpResponseForbidden('工号必须为数字')
+        if not re.match(r'^[a-zA-Z0-9]{8,20}$', password):
+            return http.HttpResponseForbidden('请输入8-20个字符的密码')
+        if password != password2:
+            return http.HttpResponseForbidden('两次输入的密码不一致')
+        if name == '':
+            return http.HttpResponseForbidden('请输入姓名')
+        if sex not in ['男', '女']:
+            return http.HttpResponseForbidden('请输入性别')
+        # 创建用户
+        try:
+            UserModel.objects.create_user(
+                username=username,
+                password=password,
+                name=name,
+                sex=sex,
+                role='teacher'
+            )
+        except:
+            return http.JsonResponse({'msg': '注册失败'})
+
+        # 返回响应
+        return http.JsonResponse({'msg': '注册成功'})
 
 
 class CreateUserView(View):
