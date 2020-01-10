@@ -4,7 +4,7 @@ from django.views import View
 from django import http
 import re
 
-from users.models import UserModel
+from users.models import UserModel, TeacherModel
 
 
 # Create your views here.
@@ -44,6 +44,8 @@ class RegisterTeacherView(View):
             password2 = request.POST['password2']
             name = request.POST['name']
             sex = request.POST['sex']
+            college = request.POST['college']
+            title = request.POST['title']
         except:
             return http.HttpResponseForbidden('缺少必传参数')
 
@@ -66,6 +68,11 @@ class RegisterTeacherView(View):
                 name=name,
                 sex=sex,
                 role='teacher'
+            )
+            TeacherModel.objects.create(
+                index=username,
+                college=college,
+                title=title
             )
         except:
             return http.JsonResponse({'msg': '注册失败'})
