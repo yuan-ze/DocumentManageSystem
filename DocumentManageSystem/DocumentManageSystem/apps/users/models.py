@@ -4,6 +4,21 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
+class TeacherModel(models.Model):
+    """教师模型"""
+    # 工号
+    index = models.CharField(max_length=12, null=False)
+    # 院系
+    college = models.CharField(max_length=50, null=False)
+    # 职称
+    title = models.CharField(max_length=50, null=False)
+
+    class Meta:
+        db_table = 'tb_teacher'
+        verbose_name = '教师表'
+        verbose_name_plural = verbose_name
+
+
 class StudentModel(models.Model):
     """学生模型"""
     # 学号
