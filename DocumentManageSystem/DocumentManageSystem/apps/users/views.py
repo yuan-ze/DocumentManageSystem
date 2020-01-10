@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views import View
 from django import http
 import re
@@ -7,8 +8,28 @@ from users.models import UserModel
 
 # Create your views here.
 
+class LoginView(View):
+    """用户登录"""
 
-class RegiestTeacherView(View):
+    def post(self, request):
+        # 接收参数
+        try:
+            username = request.POST['username']
+            password = request.POST['password']
+        except:
+            return http.HttpResponseForbidden('缺少必传参数')
+
+        # 用户验证
+        user = UserModel.objects.get(username=username)
+        if user is None:
+            return http.HttpResponseForbidden('用户不存在')
+        if not user.check_password(password):
+            return http.HttpResponseForbidden('密码输入错误')
+
+        return http.JsonResponse({'msg': '登录成功'})
+
+
+class RegisterTeacherView(View):
     """教师注册"""
 
     def post(self, request):
