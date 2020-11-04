@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'DocumentManageSystem.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '39.106.224.193',
+        'HOST': '',
         'PORT': 3306,
-        'USER': 'admin',
-        'PASSWORD': 'admin123',
-        'NAME': 'DocManage'
+        'USER': '',
+        'PASSWORD': '',
+        'NAME': ''
     }
 }
 
